@@ -1,26 +1,29 @@
 pipeline {
-    agent any
+    agent { label 'agent-1' }
     
     tools {
-        jdk 'jdk17'
-        maven 'maven3'
+        maven 'maven3.9'
+        jdk 'jdk'
     }
-    
-    stages {   
-        stage('Compile') {
+
+    stages {
+        stage('Git Checkout') {
             steps {
-            sh 'mvn compile'
+                git branch: 'main', url: 'https://github.com/jaiswaladi246/Boardgame.git'
             }
         }
-        
-        stage('Test') {
-            steps {
+        stage('Compile'){
+            steps{
+                sh 'mvn compile'
+            }
+        }
+        stage('Test'){
+            steps{
                 sh 'mvn test'
             }
         }
-        
-        stage('Build') {
-            steps {
+        stage('Build'){
+            steps{
                 sh 'mvn package'
             }
         }
